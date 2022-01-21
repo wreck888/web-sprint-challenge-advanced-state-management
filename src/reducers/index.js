@@ -1,9 +1,55 @@
+import { LOADING, FETCH_ERROR, SUCCESS, ADD_SMURF, ERROR } from "../actions";
 
 export const initialState = {
+    smurfs: [],
+    isLoading: false,
+    errorMessage: "", 
 }
 
-const reducer = ()=>{
-}
+export const reducer = ( state = initialState, action)=>{
+    switch (action.type) {
+        case LOADING:
+            return{
+                ...state,
+                smurfs: [],
+                isLoading: true,
+                errorMessage: ""
+        };
+        case FETCH_ERROR:
+            return {
+                ...state,
+                smurfs: [],
+                isLoading: false,
+                errorMessage: action.payload
+            };
+        case SUCCESS:
+            return {
+                ...state,
+                smurfs: action.payload,
+                isLoading: false,
+                errorMessage: ""
+            };
+        case ADD_SMURF:
+            const newSmurf = {
+                id: Math.random(),
+                name: action.payload.name,
+                nickname: action.payload.nickname,
+                position: action.payload.position,
+                description: action.payload.description,
+            };
+            return{
+                ...state,
+                smurfs: [...state.smurfs, newSmurf]
+            };
+        case ERROR:
+            return{
+                ...state,
+                errorMessage: 'Name, Position, and Nickname Fields Are Required!'
+            };
+    default:
+        return state;
+    }
+};
 
 //**************DO NOT EDIT ANY CODE BEYOND THIS POINT**************//
 export default reducer;
